@@ -149,13 +149,10 @@ function NavBar() {
         </Link>
       </div>
       {loggedIn ? (
-        <div className="flex ">
+        <div className="flex  items-center">
           <Link to="/profile">
-            <motion.button
-              whileTap={{ scale: 0.8 }}
-              className="font-bold md:mx-2 mx-1 md:px-3 md:py-2 px-2 py-1 rounded-full bg-btn1 cursor-pointer text-white text-sm"
-            >
-              Profile
+            <motion.button whileTap={{ scale: 0.8 }} className="">
+              <img src="public/user.png" alt="" className="w-10" />
             </motion.button>
           </Link>
           <button onClick={handleLogout}>

@@ -41,9 +41,9 @@ function Profile() {
   };
 
   return (
-    <div className="w-full font-text">
+    <div className="w-full font-text ">
       {/* user details */}
-      <div className="w-[300px] h-[600px] bg-gray-200 p-2">
+      <div className="w-[300px] h-fit bg-gray-200 p-2">
         <div className="flex flex-col w-full justify-center items-center">
           <img
             className="rounded-full w-32 h-32 object-cover shadow-md shadow-black border-[5px] border-btn2"
@@ -183,24 +183,27 @@ function Profile() {
                 onChange={handleFileUpload}
               />
             </div>
-            <div>
-              <button
-                onClick={handleViewFiles}
-                className="flex justify-center items-center w-full px-5 py-2 rounded mt-2  bg-btn2"
-              >
-                View Uploaded Files
-              </button>
-            </div>
+            
           </div>
         ) : (
           <div>
-            {/* ...Display fields for non-edit mode... */}
-            <button
-              onClick={handleEditClick}
-              className="flex justify-center items-center w-full px-5 py-2 rounded mt-2  bg-btn2"
-            >
-              Upload Report
-            </button>
+            <div>
+              {/* ...Display fields for non-edit mode... */}
+              <button
+                onClick={handleEditClick}
+                className="flex justify-center items-center w-full px-5 py-2 rounded mt-2  bg-btn2"
+              >
+                Upload Report
+              </button>
+              </div>
+              <div>
+                <button
+                  onClick={handleViewFiles}
+                  className="flex justify-center items-center w-full px-5 py-2 rounded mt-2  bg-btn2"
+                >
+                  View Uploaded Files
+                </button>
+              </div>
           </div>
         )}
       </div>

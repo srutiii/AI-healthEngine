@@ -11,7 +11,10 @@ import Footer from "../components/Footer";
 
 function HomePage() {
   return (
-    <div className="w-full h-full bg-lightBackground overflow-hidden ">
+    <div
+      className="w-full h-full bg-lightBackground overflow-hidden 
+    "
+    >
       <HeroSection />
       <div className="md:mx-10 mx-5">
         <About />
@@ -23,9 +26,9 @@ function HomePage() {
         <Testimonials />
         <FAQ />
       </div>
-
       <Contact />
-      <Footer/>
+
+      <Footer />
     </div>
   );
 }

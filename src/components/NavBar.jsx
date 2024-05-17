@@ -60,13 +60,13 @@ function NavBar() {
     },
   };
 
-  useEffect(() => {
-    if (mode === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [mode]);
+  // useEffect(() => {
+  //   if (mode === "dark") {
+  //     document.documentElement.classList.add("dark");
+  //   } else {
+  //     document.documentElement.classList.remove("dark");
+  //   }
+  // }, [mode]);
 
   return (
     <div className="w-full h-[70px] flex justify-between items-center  z-20 font-text sticky top-0 bg-white p-5  ">
@@ -114,7 +114,7 @@ function NavBar() {
             )}
           </AnimatePresence>
         </div>
-        <div>
+        {/* <div>
           <button
             onClick={() => setMode(mode === "light" ? "dark" : "light")}
             className="sm:mr-4 flex text-xl mr-10  rounded-full "
@@ -125,7 +125,7 @@ function NavBar() {
               <FaMoon className="text-black cursor-pointer" />
             )}
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="">
         <Link to="/">

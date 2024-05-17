@@ -53,7 +53,7 @@ function Signup() {
     return null;
   }
   return (
-    <div className="relative flex flex-col justify-center items-center  w-full md:h-[600px] bg-lightBackground font-text h-[700px]">
+    <div className="relative flex flex-col justify-center items-center  w-full md:h-[600px]  font-text h-[700px]">
       <div className="rounded shadow-md shadow-gray-400 mx-10">
         <div className="">
           <h1 className="font-semibold capitalize text-4xl  justify-center items-center flex  p-4 text-lightText">
@@ -67,7 +67,7 @@ function Signup() {
 
         <form>
           <div className="flex flex-col justify-center px-2 ">
-            <div className=" md:flex rounded-md  mb-5 px-4 text-gray-300">
+            <div className=" md:flex rounded-md  mb-5 px-4 text-gray-500">
               {/* <label htmlFor="name" className="font-sans font-semibold uppercase">Name</label> */}
               <div className="flex flex-col px-2 py-2 ">
                 <input

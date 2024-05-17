@@ -5,9 +5,19 @@ import { fadeIn } from "../variants";
 
 function HeroSection() {
   return (
-    <div className="w-full h-[450px] overflow-hidden font-text">
-      {/* <img className="bg-center" src="public/heroimg.png" alt="" /> */}
-
+    <div className="w-full h-[450px] overflow-hidden font-text relative ">
+      <img className="absolute top-5 right-52" src="public/pill.png" alt="" />
+      <img className="absolute top-10 left-52" src="public/y_pill.png" alt="" />
+      <img
+        className="absolute top-52 right-64"
+        src="public/prevent.png"
+        alt=""
+      />
+      <img
+        className="absolute top-[300px] left-[350px]"
+        src="public/pill2.png"
+        alt=""
+      />
       <div className="w-full h-full">
         <div className="w-full flex items-center justify-center flex-col  h-full px-10">
           <motion.span

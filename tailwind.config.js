@@ -17,7 +17,8 @@ export default {
       },
       backgroundImage: {
         img1: 'url("https://wallpapers.com/images/featured/healthcare-oco8w27tkw40cp90.jpg")',
-        doc: 'url("https://www.aamc.org/sites/default/files/styles/scale_and_crop_1200_x_666/public/workforce-feature.jpg__992x558_q85_crop-smart_subsampling-2_upscale.jpg?itok=xrYKAvV0")',
+        doc: 'url("https://images.unsplash.com/photo-1655313719493-16ebe4906441?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dp")',
+        bg1: 'url("https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1448&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
       },
     },
   },

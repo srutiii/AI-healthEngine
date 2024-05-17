@@ -1,34 +1,153 @@
-import React, { useState, useEffect } from "react";
-import { IoMdSend } from "react-icons/io";
+import React, { useState } from "react";
 
 function PredictDisease() {
-  const [symptoms, setSymptoms] = useState({
+  const symptoms = [
+    "itching",
+    "skin_rash",
+    "nodal_skin_eruptions",
+    "continuous_sneezing",
+    "shivering",
+    "chills",
+    "joint_pain",
+    "stomach_pain",
+    "acidity",
+    "ulcers_on_tongue",
+    "muscle_wasting",
+    "vomiting",
+    "burning_micturition",
+    "spotting_urination",
+    "fatigue",
+    "weight_gain",
+    "anxiety",
+    "cold_hands_and_feets",
+    "mood_swings",
+    "weight_loss",
+    "restlessness",
+    "lethargy",
+    "patches_in_throat",
+    "irregular_sugar_level",
+    "cough",
+    "high_fever",
+    "sunken_eyes",
+    "breathlessness",
+    "sweating",
+    "dehydration",
+    "indigestion",
+    "headache",
+    "yellowish_skin",
+    "dark_urine",
+    "nausea",
+    "loss_of_appetite",
+    "pain_behind_the_eyes",
+    "back_pain",
+    "constipation",
+    "abdominal_pain",
+    "diarrhoea",
+    "mild_fever",
+    "yellow_urine",
+    "yellowing_of_eyes",
+    "acute_liver_failure",
+    "fluid_overload",
+    "swelling_of_stomach",
+    "swelled_lymph_nodes",
+    "malaise",
+    "blurred_and_distorted_vision",
+    "phlegm",
+    "throat_irritation",
+    "redness_of_eyes",
+    "sinus_pressure",
+    "runny_nose",
+    "congestion",
+    "chest_pain",
+    "weakness_in_limbs",
+    "fast_heart_rate",
+    "pain_during_bowel_movements",
+    "pain_in_anal_region",
+    "bloody_stool",
+    "irritation_in_anus",
+    "neck_pain",
+    "dizziness",
+    "cramps",
+    "bruising",
+    "obesity",
+    "swollen_legs",
+    "swollen_blood_vessels",
+    "puffy_face_and_eyes",
+    "enlarged_thyroid",
+    "brittle_nails",
+    "swollen_extremeties",
+    "excessive_hunger",
+    "extra_marital_contacts",
+    "drying_and_tingling_lips",
+    "slurred_speech",
+    "knee_pain",
+    "hip_joint_pain",
+    "muscle_weakness",
+    "stiff_neck",
+    "swelling_joints",
+    "movement_stiffness",
+    "spinning_movements",
+    "loss_of_balance",
+    "unsteadiness",
+    "weakness_of_one_body_side",
+    "loss_of_smell",
+    "bladder_discomfort",
+    "foul_smell_of_urine",
+    "continuous_feel_of_urine",
+    "passage_of_gases",
+    "internal_itching",
+    "toxic_look_(typhos)",
+    "depression",
+    "irritability",
+    "muscle_pain",
+    "altered_sensorium",
+    "red_spots_over_body",
+    "belly_pain",
+    "abnormal_menstruation",
+    "dischromic_patches",
+    "watering_from_eyes",
+    "increased_appetite",
+    "polyuria",
+    "family_history",
+    "mucoid_sputum",
+    "rusty_sputum",
+    "lack_of_concentration",
+    "visual_disturbances",
+    "receiving_blood_transfusion",
+    "receiving_unsterile_injections",
+    "coma",
+    "stomach_bleeding",
+    "distention_of_abdomen",
+    "history_of_alcohol_consumption",
+    "fluid_overload",
+    "blood_in_sputum",
+    "prominent_veins_on_calf",
+    "palpitations",
+    "painful_walking",
+    "pus_filled_pimples",
+    "blackheads",
+    "scurring",
+    "skin_peeling",
+    "silver_like_dusting",
+    "small_dents_in_nails",
+    "inflammatory_nails",
+    "blister",
+    "red_sore_around_nose",
+    "yellow_crust_ooze",
+    "prognosis",
+  ];
+
+  const [prediction, setPrediction] = useState("");
+  const [selectedSymptoms, setSelectedSymptoms] = useState({
     symptom1: "",
     symptom2: "",
     symptom3: "",
   });
-  const [prediction, setPrediction] = useState("");
-  const [symptomList, setSymptomList] = useState([]);
-
-  useEffect(() => {
-    fetch("/get_symptoms")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          console.error("Error fetching symptoms:", data.error);
-          // Handle error, e.g., display error message to user
-        } else {
-          setSymptomList(data.symptoms);
-          console.log(symptomList);
-        }
-      })
-      .catch((error) => console.error("Error fetching symptoms:", error));
-  }, []);
 
   const handlePredict = async () => {
     try {
       const response = await fetch(
-        `/diseasepredict/${symptoms.symptom1},${symptoms.symptom2},${symptoms.symptom3}`
+        `/diseasepredict/${selectedSymptoms.symptom1},${selectedSymptoms.symptom2},${selectedSymptoms.symptom3}`
       );
       const data = await response.json();
       if (data.error) {
@@ -45,64 +164,15 @@ function PredictDisease() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSymptoms((prevSymptoms) => ({
+    setSelectedSymptoms((prevSymptoms) => ({
       ...prevSymptoms,
       [name]: value,
     }));
   };
 
-  // const handlePredict = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `/diseasepredict/${symptoms.symptom1},${symptoms.symptom2},${symptoms.symptom3}`
-  //     );
-  //     const data = await response.json();
-  //     setPrediction(data.prediction);
-  //   } catch (error) {
-  //     console.error("Error predicting disease:", error);
-  //   }
-  // };
-
   return (
     <div className="">
-      <div className=" w-full h-screen mb-20 font-text">
-        <div className=" w-full flex justify-between px-10 mt-32">
-          <div className="w-1/2 flex justify-center items-center ">
-            <h2 className="text-lightText  capitalize text-6xl">
-              how does it work?
-            </h2>
-          </div>
-          <div className="w-2/3 flex justify-center items-center text-gray-700">
-            <ul className="px-2 ">
-              <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
-                Our model is trained on extensive and diverse datasets,
-                facilitating comprehensive learning. It is rigorously tested,
-                achieving a remarkable 100% accuracy rate in disease prediction,
-                ensuring reliable and effective healthcare outcomes.
-              </li>
-              <li className="py-2 px-2  border-l-2 border-lightText  mb-2 text-justify">
-                Utilizing supervised learning and advanced Machine Learning
-                algorithms, our model maps symptoms to diseases during training.
-                This approach ensures precise predictions and empowers proactive
-                healthcare interventions.
-              </li>
-              <li className="py-2 px-2 border-l-2 border-lightText  mb-2 text-justify">
-                The outcome is a robust disease prediction system capable of
-                accurately identifying health conditions based on symptoms,
-                enabling timely interventions and informed healthcare decisions
-                for improved patient outcomes.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="flex justify-center mt-20">
-          <img src="src/assets/healthcare.png" alt="" />
-          <h2 className="flex justify-center mt-10 font-bold text-xl text-gray-500">
-            "Experience the future of healthcare with our Disease Prediction
-            System – data-driven insights pave the way for a healthier
-            tomorrow."
-          </h2>
-        </div>
+      <div className="w-full h-screen mb-20 font-text">
         <div className="flex justify-center mt-10">
           <form className="">
             <div className="flex">
@@ -111,11 +181,11 @@ function PredictDisease() {
                   Symptom 1:
                   <select
                     name="symptom1"
-                    value={symptoms.symptom1}
+                    value={selectedSymptoms.symptom1}
                     onChange={handleInputChange}
                   >
                     <option value="">Select Symptom</option>
-                    {symptomList.map((symptom) => (
+                    {symptoms.map((symptom) => (
                       <option key={symptom} value={symptom}>
                         {symptom}
                       </option>
@@ -128,11 +198,11 @@ function PredictDisease() {
                   Symptom 2:
                   <select
                     name="symptom2"
-                    value={symptoms.symptom2}
+                    value={selectedSymptoms.symptom2}
                     onChange={handleInputChange}
                   >
                     <option value="">Select Symptom</option>
-                    {symptomList.map((symptom) => (
+                    {symptoms.map((symptom) => (
                       <option key={symptom} value={symptom}>
                         {symptom}
                       </option>
@@ -145,11 +215,11 @@ function PredictDisease() {
                   Symptom 3:
                   <select
                     name="symptom3"
-                    value={symptoms.symptom3}
+                    value={selectedSymptoms.symptom3}
                     onChange={handleInputChange}
                   >
                     <option value="">Select Symptom</option>
-                    {symptomList.map((symptom) => (
+                    {symptoms.map((symptom) => (
                       <option key={symptom} value={symptom}>
                         {symptom}
                       </option>
@@ -168,12 +238,42 @@ function PredictDisease() {
               </button>
             </div>
           </form>
+          {prediction && (
+            <div className="flex justify-center mt-4">
+              <p>Predicted Disease: {prediction}</p>
+            </div>
+          )}
         </div>
-        {prediction && (
-          <div className="flex justify-center mt-4">
-            <p>Predicted Disease: {prediction}</p>
+        <div className="w-full flex justify-between p-10 mt-32 bg-gray-100">
+          <div className="w-1/2 flex justify-center items-center">
+            <h2 className="text-lightText capitalize text-6xl">
+              How does it work?
+            </h2>
           </div>
-        )}
+
+          <div className="w-2/3 flex justify-center items-center text-gray-700">
+            <ul className="px-2">
+              <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
+                Our model is trained on extensive and diverse datasets,
+                facilitating comprehensive learning. It is rigorously tested,
+                achieving a remarkable 100% accuracy rate in disease prediction,
+                ensuring reliable and effective healthcare outcomes.
+              </li>
+              <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
+                Utilizing supervised learning and advanced Machine Learning
+                algorithms, our model maps symptoms to diseases during training.
+                This approach ensures precise predictions and empowers proactive
+                healthcare interventions.
+              </li>
+              <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
+                The outcome is a robust disease prediction system capable of
+                accurately identifying health conditions based on symptoms,
+                enabling timely interventions and informed healthcare decisions
+                for improved patient outcomes.
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ const Contact = () => {
   return (
     <>
       <section className="relative h-screen font-text items-center flex justify-center   text-black py-20 md:py-11 bg-white mt-20">
-        <div className="container">
+        <div className="container mb-52 md:mb-0">
           <div className="-mx-4 flex flex-wrap md:mt-20 lg:justify-between">
             <div className="w-full px-4 lg:w-1/2 xl:w-6/12">
               <div className="mb-10 max-w-[570px] lg:mb-0 px-4">

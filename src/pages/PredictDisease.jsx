@@ -144,11 +144,22 @@ function PredictDisease() {
     symptom3: "",
   });
 
+
   const handlePredict = async () => {
     try {
-      const response = await fetch(
-        `/diseasepredict/${selectedSymptoms.symptom1},${selectedSymptoms.symptom2},${selectedSymptoms.symptom3}`
-      );
+      const response = await fetch('http://localhost:5000/diseasepredict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedSymptoms),
+      });
+
+      if (!response.ok) {
+        // If response is not ok, throw an error
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       if (data.error) {
         console.error("Error predicting disease:", data.error);
@@ -157,10 +168,32 @@ function PredictDisease() {
         setPrediction(data.prediction);
       }
     } catch (error) {
-      console.error("Error predicting disease:", error);
+      console.error("Error predicting disease:", error.message);
       // Handle error, e.g., display error message to user
     }
   };
+
+  // const handlePredict = async () => {
+  //   try {
+  //     const response = await fetch('/diseasepredict', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(selectedSymptoms),
+  //     });
+  //     const data = await response.json();
+  //     if (data.error) {
+  //       console.error("Error predicting disease:", data.error);
+  //       // Handle error, e.g., display error message to user
+  //     } else {
+  //       setPrediction(data.prediction);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error predicting disease:", error);
+  //     // Handle error, e.g., display error message to user
+  //   }
+  // };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, session
-# from flask_cors import CORS
-# from flask_mysqldb import MySQL
+from flask_cors import CORS
+from flask_mysqldb import MySQL
 import pandas as pd
 import numpy as np
 import pickle
@@ -9,34 +9,35 @@ from scipy.stats import mode
 import warnings
 from sklearn.ensemble import RandomForestClassifier
 from collections import Counter
-# from flask_bcrypt import Bcrypt 
-# from flask_mail import Mail, Message
+from flask_bcrypt import Bcrypt 
+from flask_mail import Mail, Message
+from collections import Counter
 
 
 
 app = Flask(__name__)
 
-# app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
-# app.config['MAIL_PORT'] = 2525
-# app.config['MAIL_USERNAME'] = 'zerowood70@gmail.com'
-# app.config['MAIL_PASSWORD'] = '1julyabhi'
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = 'zerowood70@gmail.com'
+app.config['MAIL_PASSWORD'] = '1julyabhi'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 
 
-# bcrypt = Bcrypt(app) 
-# # CORS(app) 
-# mail = Mail(app)
+bcrypt = Bcrypt(app) 
+CORS(app) 
+mail = Mail(app)
 
 app.secret_key = "helloAI"
 
 
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = ''
-# app.config['MYSQL_DB'] = 'helloAI'
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'helloAI'
  
-# mysql = MySQL(app)
+mysql = MySQL(app)
 
 #removing warnings
 
@@ -77,10 +78,12 @@ def login():
     print(user)
 
     if user and bcrypt.check_password_hash(user[4], password):  # Assuming that password is the third column in the users table
+        print("Login")
         session['email'] = email
-        return jsonify({"login":"login Successful"})
-        return jsonify(logged_in=True, email=email)
+        return jsonify({"success": True, "message": "Login successful"})
+
     else:
+        print("error")
         return jsonify(logged_in=False, message='Login failed. Please check your email and password.')
 
 
@@ -89,6 +92,8 @@ def login():
 def signup():
 
     data = request.get_json()
+    
+    print(data)
 
     first_name = data.get('first_name')
     last_name = data.get('last_name')
@@ -121,70 +126,107 @@ def contact():
 
     data = request.get_json()
 
-
-
     msg = Message(subject='Hello from the other side!', sender='peter@mailtrap.io', recipients=['paul@mailtrap.io'])
     msg.body = "Hey Paul, sending you this email from my Flask app, lmk if it works"
     mail.send(msg)
     return "Message sent!"
 
+
 #Route for disease prediction...
-@app.route('/diseasepredict/<symptoms>',methods = ['GET','POST'])
-def predictDisease(symptoms):
-    try:
-        symptoms = symptoms.replace('<', '').replace('>', '')    
-        symptoms = symptoms.split(',')
+@app.route('/diseasepredict', methods = ['GET','POST'])
+def predictDisease():
 
-        # print(symptoms)
-        # print(data_dict['predictions_classes'])
-        input_data = [0] * len(data_dict["symptom_index"])
-        for symptom in symptoms:
-            # print(symptom)
-            index = data_dict["symptom_index"].get(symptom.capitalize(), -1)
-            if index != -1:
-                input_data[index] = 1
+    symptoms = request.json
+    symptom_list = [symptoms['symptom1'], symptoms['symptom2'], symptoms['symptom3']]
 
-        input_data = np.array(input_data).reshape(1, -1)
+    # print(symptoms)
+    # print(data_dict['predictions_classes'])
+    input_data = [0] * len(data_dict["symptom_index"])
+    for symptom in symptom_list:
+        # print(symptom)
+        index = data_dict["symptom_index"].get(symptom.capitalize(), -1)
+        if index != -1:
+            input_data[index] = 1
+
+    input_data = np.array(input_data).reshape(1, -1)
+
+   
+    rf_prediction = data_dict["predictions_classes"][rf_model.predict(input_data)[0]]
+    nb_prediction = data_dict["predictions_classes"][nb_model.predict(input_data)[0]]
+    svm_prediction = data_dict["predictions_classes"][svm_model.predict(input_data)[0]]
+ 
+
+    # final_prediction = mode([ nb_prediction, svm_prediction], axis=0, keepdims=True, nan_policy='omit')[0][0]
+    def mode(arr):
+        counter = Counter(arr)
+        max_count = max(counter.values())
+        mode_values = [k for k, v in counter.items() if v == max_count]
+        return mode_values[0]
+
+    final_prediction = mode([nb_prediction, svm_prediction])
 
     
-        rf_prediction = data_dict["predictions_classes"][rf_model.predict(input_data)[0]]
-        nb_prediction = data_dict["predictions_classes"][nb_model.predict(input_data)[0]]
-        svm_prediction = data_dict["predictions_classes"][svm_model.predict(input_data)[0]]
+    # print(f'Final Prediction: {final_prediction}')
+    predictions = {
+        "rf_model_prediction": rf_prediction,
+        "nb_model_prediction": nb_prediction,
+        "svm_model_prediction": svm_prediction,
+        "final_prediction": final_prediction
+    }
 
-        # final_prediction = mode([ nb_prediction, svm_prediction], axis=0, keepdims=True, nan_policy='omit')[0][0]
-        def mode(arr):
-            counter = Counter(arr)
-            max_count = max(counter.values())
-            mode_values = [k for k, v in counter.items() if v == max_count]
-            return mode_values[0]
-
-        final_prediction = mode([nb_prediction, svm_prediction])
-        
-        # print(f'Final Prediction: {final_prediction}')
-        predictions = {
-            "rf_model_prediction": rf_prediction,
-            "nb_model_prediction": nb_prediction,
-            "svm_model_prediction": svm_prediction,
-            "final_prediction": final_prediction
-        }
-        print(predictions['final_prediction'])
-        
-        # return predictions['final_prediction']
-        return jsonify({"prediction": final_prediction})
-    except Exception as e:
-        return jsonify({"error": str(e)})
-
-@app.route('/get_symptoms', methods=['GET'])
-def get_symptoms():
-    print(data_dict)
-    try:
-        symptoms_list = list(data_dict["symptom_index"].keys())
-        print(symptoms_list)
-        return jsonify({"symptoms": symptoms_list})
-    except Exception as e:
-        return jsonify({"error": str(e)})
+    session['predicted_disease'] = predictions['final_prediction']
+    print(predictions['final_prediction'])
+    
+    return jsonify({"prediction": predictions['final_prediction']})
 
 
+# Disease Description function
+@app.route("/description",methods=["GET","POST"])
+def diseaseDescription():
+    predicted_disease = session.get('predicted_disease')
+    disease_descriptions={}
+    predicted_disease = predicted_disease
+
+    with open('../Data/symptom_Description.csv', 'r', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)  # Skip the header row 
+
+        for row in reader:
+            disease_name, description = row  
+            disease_descriptions[disease_name] = description
+
+    if predicted_disease in disease_descriptions:
+        description = disease_descriptions[predicted_disease]
+        print(f"Description of {predicted_disease}: {description}")
+    else:
+        print(f"Description for {predicted_disease} not found.")
+
+
+#Disease precaution
+@app.route("/precaution",methods=["GET","POST"])
+def diseasePrediction(predicted_disease):
+    predicted_disease = session.get('predicted_disease')
+
+    disease_precautions={}
+    with open('../Data/symptom_precaution.csv','r', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)
+
+        for row in reader:
+            disease,precaution_1, precaution_2, precaution_3, precaution_4 = row
+            disease_precautions[disease]= [precaution_1, precaution_2, precaution_3, precaution_4]
+        # print(disease_precautions)
+
+        if predicted_disease in disease_precautions.keys():
+            precautions = disease_precautions[predicted_disease]
+            print(f"Precautions for {predicted_disease}:")
+            for i, precaution in enumerate(precautions):
+                # print(i, precaution)
+                if precaution == '':
+                    continue
+                print(f"{precaution.capitalize()}")
+        else:
+            print(f"Precautions for {predicted_disease} not found.")
 
 if __name__ == '__main__':
     app.run()

@@ -176,57 +176,96 @@ def predictDisease():
 
     session['predicted_disease'] = predictions['final_prediction']
     print(predictions['final_prediction'])
+
     
-    return jsonify({"prediction": predictions['final_prediction']})
-
-
-# Disease Description function
-@app.route("/description",methods=["GET","POST"])
-def diseaseDescription():
-    predicted_disease = session.get('predicted_disease')
-    disease_descriptions={}
-    predicted_disease = predicted_disease
-
-    with open('../Data/symptom_Description.csv', 'r', newline='') as csvfile:
+    # # return jsonify({"prediction": predictions['final_prediction']})
+    disease_descriptions = {}
+    with open('../back_end/models/symptom_Description.csv', 'r', newline='') as csvfile:
         reader = csv.reader(csvfile)
-        next(reader)  # Skip the header row 
-
+        next(reader)  # Skip the header row
         for row in reader:
-            disease_name, description = row  
+            disease_name, description = row
             disease_descriptions[disease_name] = description
 
-    if predicted_disease in disease_descriptions:
-        description = disease_descriptions[predicted_disease]
-        print(f"Description of {predicted_disease}: {description}")
-    else:
-        print(f"Description for {predicted_disease} not found.")
+    description = disease_descriptions.get(predictions['final_prediction'], "Description not found.")
+    print(description)
+
+    # Retrieve the precautions for the predicted disease
+    # disease_precautions = {}
+    # with open('../Data/symptom_precaution.csv', 'r', newline='') as csvfile:
+    #     reader = csv.reader(csvfile)
+    #     next(reader)  # Skip the header row
+    #     for row in reader:
+    #         disease, precaution_1, precaution_2, precaution_3, precaution_4 = row
+    #         disease_precautions[disease] = [precaution_1, precaution_2, precaution_3, precaution_4]
+
+    # precautions = disease_precautions.get(predictions['final_prediction'], ["Precautions not found."])
+    # print(precautions)
+    prediction = predictions['final_prediction']
+
+    response = {
+        "prediction": prediction,
+        "description": description,
+        # "precautions": precautions
+    }
+
+    return jsonify(response)    
 
 
-#Disease precaution
-@app.route("/precaution",methods=["GET","POST"])
-def diseasePrediction(predicted_disease):
-    predicted_disease = session.get('predicted_disease')
 
-    disease_precautions={}
-    with open('../Data/symptom_precaution.csv','r', newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)
 
-        for row in reader:
-            disease,precaution_1, precaution_2, precaution_3, precaution_4 = row
-            disease_precautions[disease]= [precaution_1, precaution_2, precaution_3, precaution_4]
-        # print(disease_precautions)
 
-        if predicted_disease in disease_precautions.keys():
-            precautions = disease_precautions[predicted_disease]
-            print(f"Precautions for {predicted_disease}:")
-            for i, precaution in enumerate(precautions):
-                # print(i, precaution)
-                if precaution == '':
-                    continue
-                print(f"{precaution.capitalize()}")
-        else:
-            print(f"Precautions for {predicted_disease} not found.")
+
+
+
+
+# # Disease Description function
+# @app.route("/description",methods=["GET","POST"])
+# def diseaseDescription():
+#     predicted_disease = session.get('predicted_disease')
+#     disease_descriptions={}
+#     predicted_disease = predicted_disease
+
+#     with open('../Data/symptom_Description.csv', 'r', newline='') as csvfile:
+#         reader = csv.reader(csvfile)
+#         next(reader)  # Skip the header row 
+
+#         for row in reader:
+#             disease_name, description = row  
+#             disease_descriptions[disease_name] = description
+
+#     if predicted_disease in disease_descriptions:
+#         description = disease_descriptions[predicted_disease]
+#         print(f"Description of {predicted_disease}: {description}")
+#     else:
+#         print(f"Description for {predicted_disease} not found.")
+
+
+# #Disease precaution
+# @app.route("/precaution",methods=["GET","POST"])
+# def diseasePrediction(predicted_disease):
+#     predicted_disease = session.get('predicted_disease')
+
+#     disease_precautions={}
+#     with open('../Data/symptom_precaution.csv','r', newline='') as csvfile:
+#         reader = csv.reader(csvfile)
+#         next(reader)
+
+#         for row in reader:
+#             disease,precaution_1, precaution_2, precaution_3, precaution_4 = row
+#             disease_precautions[disease]= [precaution_1, precaution_2, precaution_3, precaution_4]
+#         # print(disease_precautions)
+
+#         if predicted_disease in disease_precautions.keys():
+#             precautions = disease_precautions[predicted_disease]
+#             print(f"Precautions for {predicted_disease}:")
+#             for i, precaution in enumerate(precautions):
+#                 # print(i, precaution)
+#                 if precaution == '':
+#                     continue
+#                 print(f"{precaution.capitalize()}")
+#         else:
+#             print(f"Precautions for {predicted_disease} not found.")
 
 if __name__ == '__main__':
     app.run()

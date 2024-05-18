@@ -203,11 +203,13 @@ def predictDisease():
     # print(precautions)
     prediction = predictions['final_prediction']
 
+    #precaution is changed
     response = {
         "prediction": prediction,
         "description": description,
         # "precautions": precautions
     }
+
 
     return jsonify(response)    
 

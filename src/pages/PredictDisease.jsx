@@ -177,6 +177,8 @@ function PredictDisease() {
       console.error("Error predicting disease:", error.message);
     }
   };
+  
+  // hello
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

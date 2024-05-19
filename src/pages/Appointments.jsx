@@ -1,20 +1,35 @@
 import React, { useState } from "react";
 import DoctorCard from "../components/DoctorCard";
 import { FaSearch } from "react-icons/fa";
+import { doctors } from "../components/DoctorList";
 // import axios from "axios";
 // import { load } from "cheerio";
 
 function DoctorRecommend() {
-  const [specialisation, setSpecialisation] = useState("");
-  const [location, setLocation] = useState("");
-  const [doctorsList, setDoctorsList] = useState([]);
+  
 
-  const handleSpecialisationChange = (event) => {
-    setSpecialisation(event.target.value);
+  const [location, setLocation] = useState("");
+  const [specialization, setspecialization] = useState("");
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
+  console.log(specialization, location, filteredDoctors);
+
+  const handlespecializationChange = (event) => {
+    setspecialization(event.target.value);
   };
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
+  };
+  const handleSearch = (event) => {
+    const query = event.target.value.toLowerCase();
+    const filteredDoctors = this.state.doctors.filter((doctor) => {
+      const locationMatch = doctor.city.toLowerCase().includes(query);
+      const specializationMatch = doctor.specialization
+        .toLowerCase()
+        .includes(query);
+      return locationMatch || specializationMatch;
+    });
+    this.setState({ filteredDoctors });
   };
 
   // const fetchData = async () => {
@@ -64,17 +79,21 @@ function DoctorRecommend() {
             <div className="px-6 flex ">
               <div className="px-4 ">
                 <select
-                  value={specialisation}
-                  onChange={handleSpecialisationChange}
+                  value={specialization}
+                  onChange={handlespecializationChange}
                   className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-btn2"
                 >
-                  <option value="">Specialisation</option>
-                  <option value="Oncologist">Oncologist</option>
+                  <option value="">--Specialization--</option>
+                  <option value="General Physician">General Physician</option>
                   <option value="Cardiologist">Cardiologist</option>
-                  <option value="Neurosurgeon">Neurosurgeon</option>
-                  <option value="Cardiac Surgeon">Cardiac Surgeon</option>
-                  <option value="Orthopaedic">Orthopaedic</option>
-                  <option value="Cosmetic Surgeon">Cosmetic Surgeon</option>
+                  <option value="Dermatologist">Dermatologist</option>
+                  <option value="Neurologist">Neurologist</option>
+                  <option value="Gynecologist">Gynecologist</option>
+                  <option value="Pediatrician">Pediatrician</option>
+                  <option value="Orthopedic">Orthopedic</option>
+                  <option value="Ophthalmologist">Ophthalmologist</option>
+                  <option value="Dentist">Dentist</option>
+                  <option value="ENT Specialist">ENT Specialist</option>
                 </select>
               </div>
               <div>
@@ -83,19 +102,23 @@ function DoctorRecommend() {
                   onChange={handleLocationChange}
                   className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-btn2"
                 >
-                  <option value="">Location</option>
-                  <option value="Kolkata">Kolkata</option>
+                  <option value="">--City--</option>
                   <option value="New Delhi">New Delhi</option>
-                  <option value="Bangalore">Banglore</option>
-                  <option value="Kochi">Kochi</option>
-                  <option value="Kota">Kota</option>
+                  <option value="Gurgaon">Gurgaon</option>
+                  <option value="Noida">Noida</option>
+                  <option value="Mumbai">Mumbai</option>
+                  <option value="Bangalore">Bangalore</option>
                   <option value="Chennai">Chennai</option>
+                  <option value="Hyderabad">Hyderabad</option>
+                  <option value="Kolkata">Kolkata</option>
+                  <option value="Pune">Pune</option>
+                  <option value="Ahmedabad">Ahmedabad</option>
                 </select>
               </div>
               <div className="flex justify-center items-center px-2">
                 <button
-                  className="flex justify-center items-center bg-btn2 py-2 px-3 rounded "
-                  // onClick={fetchData}
+                  className="flex justify-center items-center bg-btn2 hover:bg-sky-300 py-2 px-3 rounded "
+                  onClick={handleSearch}
                 >
                   <span className="pr-2">Search</span>
                   <FaSearch className="" />
@@ -105,38 +128,26 @@ function DoctorRecommend() {
           </div>
         </div>
         <div className="mx-5 grid grid-cols-3">
-          <DoctorCard
-            name="Name"
-            city="city"
-            location="location"
-            Specialization="something"
-            rating="3"
-            experience="5"
-          />
-          {/* <DoctorCard
-            name="Name"
-            city="city"
-            location="location"
-            specialisation="something"
-          />
-          <DoctorCard
-            name="Name"
-            city="city"
-            location="location"
-            specialisation="something"
-          />
-          <DoctorCard
-            name="Name"
-            city="city"
-            location="location"
-            specialisation="something"
-          />
-          <DoctorCard
-            name="Name"
-            city="city"
-            location="location"
-            specialisation="something"
-          /> */}
+          {doctors
+            .filter(
+              (doctor) =>
+                doctor.city.toLowerCase().includes(location.toLowerCase()) &&
+                doctor.Specialization.toLowerCase().includes(
+                  specialization.toLowerCase()
+                )
+              // doctor.city.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((doctor) => (
+              <DoctorCard
+                key={doctor.id}
+                name={doctor.name}
+                city={doctor.city}
+                location={doctor.location}
+                Specialization={doctor.Specialization}
+                rating={doctor.rating}
+                experience={doctor.experience}
+              />
+            ))}
         </div>
       </div>
     </>

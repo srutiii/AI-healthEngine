@@ -44,10 +44,10 @@ function Login() {
         }
       },
     });
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   if (LoggedIn) {
-    // navigate("/profile");
-    // return null;
+    navigate("/predict");
+    return null;
     handleLogin();
   }
 

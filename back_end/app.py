@@ -137,14 +137,14 @@ def contact():
 def predictDisease():
 
     symptoms = request.json
-    symptom_list = [symptoms['symptom1'], symptoms['symptom2'], symptoms['symptom3']]
+    symptom_list = [str(symptoms['symptom1']), str(symptoms['symptom2']), str(symptoms['symptom3'])]
 
     # print(symptoms)
     # print(data_dict['predictions_classes'])
     input_data = [0] * len(data_dict["symptom_index"])
     for symptom in symptom_list:
         # print(symptom)
-        index = data_dict["symptom_index"].get(symptom.capitalize(), -1)
+        index = data_dict["symptom_index"].get(symptom, -1)
         if index != -1:
             input_data[index] = 1
 
@@ -191,23 +191,31 @@ def predictDisease():
     print(description)
 
     # Retrieve the precautions for the predicted disease
-    # disease_precautions = {}
-    # with open('../Data/symptom_precaution.csv', 'r', newline='') as csvfile:
-    #     reader = csv.reader(csvfile)
-    #     next(reader)  # Skip the header row
-    #     for row in reader:
-    #         disease, precaution_1, precaution_2, precaution_3, precaution_4 = row
-    #         disease_precautions[disease] = [precaution_1, precaution_2, precaution_3, precaution_4]
+    disease_precautions = {}
+    with open('../back_end/models/symptom_precaution.csv', 'r', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)  # Skip the header row
+        for row in reader:
+            disease, precaution_1, precaution_2, precaution_3, precaution_4 = row
+            disease_precautions[disease] = [precaution_1, precaution_2, precaution_3, precaution_4]
 
-    # precautions = disease_precautions.get(predictions['final_prediction'], ["Precautions not found."])
-    # print(precautions)
+    precautions = disease_precautions.get(predictions['final_prediction'], ["Precautions not found."])
+    print(precautions)
     prediction = predictions['final_prediction']
+
+    #Recommend a doctor related to their disease
+    if prediction in specialization:
+        specialize = specialization[prediction]
+        print (f"For {prediction}, recommend consulting a {specialization[prediction]}.")
+    else:
+        print (f"No specific recommendation found for {prediction}.")
 
     #precaution is changed
     response = {
         "prediction": prediction,
         "description": description,
-        # "precautions": precautions
+        "precautions": precautions,
+        "specialize":specialize,
     }
 
 

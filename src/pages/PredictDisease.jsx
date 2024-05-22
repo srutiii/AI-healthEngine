@@ -143,7 +143,7 @@ function PredictDisease() {
   const [predictionData, setPredictionData] = useState({
     prediction: "",
     description: "",
-    // precautions: [],
+    precautions: [],
   });
 
   const [selectedSymptoms, setSelectedSymptoms] = useState({
@@ -174,7 +174,8 @@ function PredictDisease() {
         setPredictionData({
           prediction: data.prediction,
           description: data.description,
-          // precautions: data.precautions,
+          precautions: data.precautions,
+          specialize: data.specialize,
         });
         setIsModalOpen(true);
       }
@@ -267,19 +268,21 @@ function PredictDisease() {
                   What is {predictionData.prediction}?
                 </p>
                 <p className="mb-4 text-justify text-xs text-gray-700">
-                  {predictionData.description} Lorem ipsum dolor sit amet,
-                  consectetur adipisicing elit. Alias maxime enim mollitia
-                  repellat! Veniam, cupiditate assumenda. Odio voluptatum,
-                  perspiciatis atque dolorem mollitia animi iure sed impedit.
-                  Deleniti officia unde earum?
+                  {predictionData.description}
+                </p>
+                <p className="text-gray-800 font-medium text-sm">
+                  What precaution you should take for {predictionData.prediction}?
+                </p>
+                <p className="mb-4 text-justify text-xs text-gray-700">
+                  {predictionData.precautions}
                 </p>
                 <p className="text-lightText font-medium">
-                  We would suggest to visit a {predictionData.specalization}.
+                  We would suggest to visit a {predictionData.specialize}.
                 </p>
                 <div className="my-5 flex justify-center items-center h-[1px] bg-gray-200"></div>
                 <p className="mt-5 text-xs text-gray-500 font-bold">
                   Would you like to book an appointment and receive expert
-                  advice from a {predictionData.specalization}?
+                  advice from a {predictionData.specialize}?
                 </p>
                 <a
                   className="underline text-btn2 font-black text-sm flex justify-center items-center w-full my-2"

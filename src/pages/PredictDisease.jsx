@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import Select from "react-select";
-// import  from "react-select/creatable";
+import { BsArrowDown } from "react-icons/bs";
 
 function PredictDisease() {
   const symptoms = [
@@ -201,7 +201,51 @@ function PredictDisease() {
   }));
   return (
     <div className="">
-      <div className="w-full h-screen mb-20 font-text">
+      <div className="w-full h-[200px] bg-img3 relative">
+        <div className="w-full h-full bg-black  bg-opacity-30 ">
+          <h1 className="flex flex-col justify-center items-center w-full h-full text-3xl font-bold text-gray-100">
+            Advanced Disease Prediction{" "}
+            <span className="font-semibold text-2xl italic text-gray-300">
+              "Empowering Health Through Technology"
+            </span>
+          </h1>
+          <p className="absolute bottom-5 left-2 text-xs text-gray-300 flex items-center">
+            {" "}
+            <BsArrowDown size={30} className="p-2 animate-bounce"/>
+            Scroll down to predict
+          </p>
+        </div>
+      </div>
+      <div className="w-full flex justify-between p-10  bg-gray-100">
+        <div className="w-1/2 flex justify-center items-center">
+          <h2 className="text-lightText capitalize text-6xl">
+            How does it work?
+          </h2>
+        </div>
+        <div className="w-2/3 flex justify-center items-center text-gray-700">
+          <ul className="px-2">
+            <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
+              Our model is trained on extensive and diverse datasets,
+              facilitating comprehensive learning. It is rigorously tested,
+              achieving a remarkable 98.99% accuracy rate in disease prediction,
+              ensuring reliable and effective healthcare outcomes.
+            </li>
+            <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
+              Utilizing supervised learning and advanced Machine Learning
+              algorithms, our model maps symptoms to diseases during training.
+              This approach ensures precise predictions and empowers proactive
+              healthcare interventions.
+            </li>
+            <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
+              The outcome is a robust disease prediction system capable of
+              accurately identifying health conditions based on symptoms,
+              enabling timely interventions and informed healthcare decisions
+              for improved patient outcomes.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="w-full my-40 font-text">
         <div className="flex justify-center mt-10">
           <form className="">
             <div className="flex">
@@ -271,7 +315,8 @@ function PredictDisease() {
                   {predictionData.description}
                 </p>
                 <p className="text-gray-800 font-medium text-sm">
-                  What precaution you should take for {predictionData.prediction}?
+                  What precaution you should take for{" "}
+                  {predictionData.prediction}?
                 </p>
                 <p className="mb-4 text-justify text-xs text-gray-700">
                   {predictionData.precautions}
@@ -299,36 +344,6 @@ function PredictDisease() {
               </div>
             </div>
           )}
-        </div>
-
-        <div className="w-full flex justify-between p-10 mt-32 bg-gray-100">
-          <div className="w-1/2 flex justify-center items-center">
-            <h2 className="text-lightText capitalize text-6xl">
-              How does it work?
-            </h2>
-          </div>
-          <div className="w-2/3 flex justify-center items-center text-gray-700">
-            <ul className="px-2">
-              <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
-                Our model is trained on extensive and diverse datasets,
-                facilitating comprehensive learning. It is rigorously tested,
-                achieving a remarkable 100% accuracy rate in disease prediction,
-                ensuring reliable and effective healthcare outcomes.
-              </li>
-              <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
-                Utilizing supervised learning and advanced Machine Learning
-                algorithms, our model maps symptoms to diseases during training.
-                This approach ensures precise predictions and empowers proactive
-                healthcare interventions.
-              </li>
-              <li className="py-2 px-2 border-l-2 border-lightText mb-2 text-justify">
-                The outcome is a robust disease prediction system capable of
-                accurately identifying health conditions based on symptoms,
-                enabling timely interventions and informed healthcare decisions
-                for improved patient outcomes.
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>

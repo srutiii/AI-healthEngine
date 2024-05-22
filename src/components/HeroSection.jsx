@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { FaArrowRight } from "react-icons/fa";
-import { fadeIn } from "../variants";
+import { Link } from "react-router-dom";
+
 
 function HeroSection() {
   return (
@@ -25,7 +26,7 @@ function HeroSection() {
             // initial="hidden"
             // whileInView="show"
             // viewport={{ once: false, amount: 0.2 }}
-            className="md:text-5xl text-3xl font-bold "
+            className="md:text-5xl text-3xl font-bold"
           >
             {" "}
             AI HealthEngine
@@ -35,19 +36,19 @@ function HeroSection() {
             // initial="hidden"
             // whileInView="show"
             // viewport={{ once: false, amount: 0.2 }}
-            className="md:text-2xl text-xs font-medium text-gray-700 "
+            className="md:text-2xl text-xs font-medium text-gray-200 "
           >
             "Where technology meets healthcare for a healthier future."
           </motion.h1>
-          <div className="mt-2 ">
+          <Link to='/login' className="mt-2 ">
             <motion.button
               whileTap={{ scale: 0.8 }}
-              className="px-5 py-2 rounded-full bg-btn2 flex items-center"
+              className="px-5 py-2 rounded-full bg-btn2 flex items-center hover:bg-sky-400"
             >
               Get Started
               <FaArrowRight className="ml-2" />
             </motion.button>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { signupSchema } from "../schema";
+import { toast } from "react-toastify";
+
 function Signup() {
   const initialValues = {
     first_name: "",
@@ -36,6 +38,7 @@ function Signup() {
           if (data.success) {
             // Handle successful signup, e.g., redirect to another page
             console.log("Signup successful");
+            toast.success("Registered successfully!");
             setSignup(true);
           } else {
             setError(data.message);
@@ -43,6 +46,7 @@ function Signup() {
         } catch (error) {
           console.error("Error during signup:", error);
           setError("An error occurred during signup");
+          toast.error("Registration Failed!");
         }
       },
     });

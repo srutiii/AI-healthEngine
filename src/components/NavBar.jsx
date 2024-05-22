@@ -26,7 +26,7 @@ function NavBar() {
       link: "https://www.healthline.com/",
     },
   ];
-  const [mode, setMode] = useState("light");
+  // const [mode, setMode] = useState("light");
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {

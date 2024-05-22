@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { loginSchema } from "../schema";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 function Login() {
   const initialValues = {
@@ -33,22 +34,25 @@ function Login() {
           if (data.success) {
             // Handle successful login, e.g., redirect to another page or store authentication token
             setLoggedIn(true);
-            handleLogin();
+            // handleLogin();
             console.log("Login successful");
+            toast.success("Login successful!");
           } else {
             setError(data.message);
+            toast.error("Login failed. Please check your credentials.");
           }
         } catch (error) {
           console.error("Error during login:", error);
           setError("An error occurred during login");
+          toast.error("An error occurred during login");
         }
       },
     });
   const navigate = useNavigate();
   if (LoggedIn) {
+    handleLogin();
     navigate("/predict");
     return null;
-    handleLogin();
   }
 
   return (

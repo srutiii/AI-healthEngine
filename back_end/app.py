@@ -17,12 +17,13 @@ from collections import Counter
 
 app = Flask(__name__)
 
-app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
-app.config['MAIL_PORT'] = 2525
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'zerowood70@gmail.com'
-app.config['MAIL_PASSWORD'] = '1julyabhi'
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_PASSWORD'] = 'byki sxmt xfhp cpcs'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
 
 
 bcrypt = Bcrypt(app) 
@@ -124,10 +125,8 @@ def signup():
 @app.route('/contact', methods = ['GET','POST'])
 def contact():
 
-    data = request.get_json()
-
-    msg = Message(subject='Hello from the other side!', sender='peter@mailtrap.io', recipients=['paul@mailtrap.io'])
-    msg.body = "Hey Paul, sending you this email from my Flask app, lmk if it works"
+    msg = Message(subject='Hello from the other side!', sender='zerowood70@gmail.com', recipients=['aksbgs25@gmail.com'])
+    msg.body = "Hey Tima, sending you this email from my Flask app, lmk if it works, I love you alok"
     mail.send(msg)
     return "Message sent!"
 
@@ -219,6 +218,43 @@ def predictDisease():
     }
 
     return jsonify(response)    
+
+
+#Route for profile prediction...
+@app.route('/profile', methods = ['GET','POST'])
+def profile():
+
+    user = request.get_json()
+    email = user.get('email')
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM store WHERE email = %s', (email,))
+    cursor.connection.commit()
+    cursor.close()
+
+    if user:
+        user_details = {
+            'name': user[0],
+            'email': user[1],
+            'gender': user[3],
+            'age': user[4],
+            'phone': user[5],
+            'address': user[6]
+        }
+        return jsonify(user_details)
+    else:
+        return jsonify({'error': 'User not found'}), 404
+    
+
+#Route for profile prediction...
+@app.route('/appoint', methods = ['GET','POST'])
+def appoint():    
+    data = request.json()
+    print(data)
+
+    
+    
+
+
 
 
 if __name__ == '__main__':

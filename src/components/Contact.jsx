@@ -1,6 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import emailjs from "emailjs-com";
+import { toast } from "react-toastify";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    details: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log(FormData);
+  };
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_r2al8yc",
+        "template_xcl5fwg",
+        e.target,
+        "-NVl8nEcxsB-UMHHZ"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          toast.success("Mail sent successfully");
+        },
+        (error) => {
+          console.log(error.text);
+          toast.error("Failed to send mail. Please try again.");
+        }
+      );
+
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      details: "",
+    });
+  };
   return (
     <>
       <section className="relative h-screen font-text items-center flex justify-center   text-black py-20 md:py-11 bg-white mt-20">
@@ -110,28 +152,47 @@ const Contact = () => {
             </div>
             <div className="w-full md:px-4 px-14 lg:w-1/2 xl:w-5/12">
               <div className="relative md:h-[520px] rounded-lg bg-white p-4 shadow-lg  sm:p-8">
-                <form>
-                  <ContactInputBox
-                    type="text"
-                    name="name"
-                    placeholder="Your Name"
-                  />
-                  <ContactInputBox
-                    type="text"
-                    name="email"
-                    placeholder="Your Email"
-                  />
-                  <ContactInputBox
-                    type="text"
-                    name="phone"
-                    placeholder="Your Phone"
-                  />
-                  <ContactTextArea
-                    row="6"
-                    placeholder="Your Message"
-                    name="details"
-                    defaultValue=""
-                  />
+                <form onSubmit={sendEmail}>
+                  <div className="mb-6">
+                    <input
+                      type="text"
+                      placeholder="Your Name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary bg-blue-100 text-black"
+                    />
+                  </div>
+                  <div className="mb-6">
+                    <input
+                      type="email"
+                      placeholder="Your Email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary bg-blue-100 text-black"
+                    />
+                  </div>
+                  <div className="mb-6">
+                    <input
+                      type="tel"
+                      placeholder="Your Phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary bg-blue-100 text-black"
+                    />
+                  </div>
+                  <div className="mb-6">
+                    <textarea
+                      rows="6"
+                      placeholder="Your Message"
+                      name="details"
+                      value={formData.details}
+                      onChange={handleChange}
+                      className="w-full resize-none rounded border border-stroke px-[14px] py-3 text-base text-black outline-none focus:border-primary bg-blue-100"
+                    />
+                  </div>
                   <div>
                     <button
                       type="submit"
@@ -141,6 +202,7 @@ const Contact = () => {
                     </button>
                   </div>
                 </form>
+
                 <div>
                   <span className="absolute -right-8 -top-10 z-[-1]">
                     <svg
@@ -169,34 +231,3 @@ const Contact = () => {
 };
 
 export default Contact;
-
-const ContactTextArea = ({ row, placeholder, name, defaultValue }) => {
-  return (
-    <>
-      <div className="mb-6">
-        <textarea
-          rows={row}
-          placeholder={placeholder}
-          name={name}
-          className="w-full resize-none rounded border border-stroke px-[14px] py-3 text-base text-black outline-none focus:border-primary bg-blue-100"
-          defaultValue={defaultValue}
-        />
-      </div>
-    </>
-  );
-};
-
-const ContactInputBox = ({ type, placeholder, name }) => {
-  return (
-    <>
-      <div className="mb-6">
-        <input
-          type={type}
-          placeholder={placeholder}
-          name={name}
-          className="w-full rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary bg-blue-100 text-black"
-        />
-      </div>
-    </>
-  );
-};

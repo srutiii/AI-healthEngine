@@ -1,22 +1,27 @@
-// AuthContext.js
-import React, { createContext, useContext, useState } from "react";
+// context/AuthContext.js
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
-  const handleLogout = () => {
-    setLoggedIn(false);
-  };
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
+export function AuthProvider({ children }) {
+  const [loggedIn, setLoggedIn] = useState(() => {
+    return localStorage.getItem("loggedIn") === "true";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("loggedIn", loggedIn);
+  }, [loggedIn]);
+
+  const login = () => setLoggedIn(true);
+  const logout = () => setLoggedIn(false);
+
   return (
-    <AuthContext.Provider value={{ loggedIn, handleLogout, handleLogin }}>
+    <AuthContext.Provider value={{ loggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => useContext(AuthContext);
+}

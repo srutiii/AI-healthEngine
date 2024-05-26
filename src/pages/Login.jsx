@@ -12,10 +12,11 @@ function Login() {
   };
 
   const [error, setError] = useState(null);
-  const [LoggedIn, setLoggedIn] = useState(false);
-  const { handleLogin } = useAuth();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const { values, errors, touched, handleSubmit, handleBlur, handleChange } =
+
+ const { values, errors, touched, handleSubmit, handleBlur, handleChange } =
     useFormik({
       initialValues: initialValues,
       validationSchema: loginSchema,
@@ -32,11 +33,10 @@ function Login() {
           const data = await response.json();
 
           if (data.success) {
-            // Handle successful login, e.g., redirect to another page or store authentication token
-            setLoggedIn(true);
-            // handleLogin();
-            console.log("Login successful");
+            // Handle successful login
+            login(); // Set the logged-in state in AuthContext
             toast.success("Login successful!");
+            navigate("/predict"); // Redirect to the predict page
           } else {
             setError(data.message);
             toast.error("Login failed. Please check your credentials.");
@@ -48,12 +48,8 @@ function Login() {
         }
       },
     });
-  const navigate = useNavigate();
-  if (LoggedIn) {
-    handleLogin();
-    navigate("/predict");
-    return null;
-  }
+
+    
 
   return (
     <div className="relative flex flex-col justify-center items-center  w-full md:h-[500px] bg-lightBackground font-text h-[700px]">

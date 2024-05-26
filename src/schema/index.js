@@ -11,6 +11,8 @@ export const signupSchema = Yup.object({
   confirm_password: Yup.string()
     .required()
     .oneOf([Yup.ref("password"), null], "Password must match."),
+  age: Yup.number().min(18).required("Please enter your age."),
+  gender: Yup.string().required("Please select your gender."),
 });
 
 export const loginSchema = Yup.object({

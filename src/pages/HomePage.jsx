@@ -15,12 +15,10 @@ function HomePage() {
       className="w-full h-full bg-lightBackground overflow-hidden 
     "
     >
-      <div className="bg-img2">
-        <div className="w-full h-full bg-black bg-opacity-50">
+      <div className="">
+        <div className="w-full h-screen ">
           <HeroSection />
-          <div className="md:mx-10 mx-5">
-            <About />
-          </div>
+          <About />
         </div>
       </div>
       <div className="md:mx-10 mx-5">

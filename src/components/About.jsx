@@ -4,7 +4,7 @@ import { fadeIn } from "../variants";
 
 function About() {
   return (
-    <div>
+    <div className="md:mx-10 mx-5">
       <motion.div
         // variants={fadeIn("down", 0.1)}
         // initial="hidden"

@@ -12,6 +12,8 @@ function Signup() {
     email: "",
     password: "",
     confirm_password: "",
+    age: "",
+    gender: "",
   };
 
   const navigate = useNavigate();
@@ -139,6 +141,41 @@ function Signup() {
               {errors.email && touched.email ? (
                 <p className="text-sm text-red-700">{errors.email}</p>
               ) : null}
+            </div>{" "}
+            <div className="md:flex rounded-md  mb-5 px-4 text-gray-500">
+              <div className="flex flex-col px-2 py-2 ">
+                <input
+                  name="age"
+                  id="age"
+                  type="number"
+                  placeholder="Age"
+                  className="bg-transparent shadow-sm focus:outline-none shadow-gray-400 font-medium    px-4 py-2 w-full"
+                  value={values.age}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  autoComplete="off"
+                />
+                {errors.age && touched.age ? (
+                  <p className="text-sm text-red-700">{errors.age}</p>
+                ) : null}
+              </div>
+              {/* Gender */}
+              <div className="flex flex-col px-2 py-2 ">
+                <input
+                  name="gender"
+                  id="gender"
+                  type="text"
+                  placeholder="Gender"
+                  className="bg-transparent shadow-sm focus:outline-none shadow-gray-400 font-medium    px-4 py-2 w-full"
+                  value={values.gender}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  autoComplete="off"
+                />
+                {errors.gender && touched.gender ? (
+                  <p className="text-sm text-red-700">{errors.gender}</p>
+                ) : null}
+              </div>
             </div>
             <div className=" md:flex rounded-md  mb-5 px-4">
               <div className="flex flex-col px-2 py-2">

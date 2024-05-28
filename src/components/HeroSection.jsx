@@ -36,7 +36,7 @@ function HeroSection() {
             // initial="hidden"
             // whileInView="show"
             // viewport={{ once: false, amount: 0.2 }}
-            className="md:text-2xl text-xs font-medium text-gray-200 "
+            className="md:text-2xl text-xs font-medium text-gray-600 "
           >
             "Where technology meets healthcare for a healthier future."
           </motion.h1>

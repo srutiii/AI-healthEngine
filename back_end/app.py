@@ -251,11 +251,6 @@ def appoint():
     data = request.json()
     print(data)
 
-    
-    
-
-
-
 
 if __name__ == '__main__':
     app.run()

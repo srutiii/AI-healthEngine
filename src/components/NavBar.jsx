@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function NavBar() {
-  const { loggedIn, handleLogout } = useAuth();
+  const { loggedIn, logout } = useAuth();
 
   const menuItems = [
     {
@@ -155,7 +155,7 @@ function NavBar() {
               <img src="public/user.png" alt="" className="w-10" />
             </motion.button>
           </Link>
-          <button onClick={handleLogout}>
+          <button onClick={logout}>
             <motion.button
               whileTap={{ scale: 0.8 }}
               className="md:mx-2 mx-1 border-2 md:px-3 md:py-2 px-2 py-1 rounded-full border-btn1 cursor-pointer text-sm"

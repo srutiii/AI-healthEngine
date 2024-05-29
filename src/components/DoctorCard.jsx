@@ -32,10 +32,33 @@ function DoctorCard({
     });
   };
 
-  const handleBookAppointment = () => {
-    // Add logic to handle booking appointment (e.g., send data to server)
-    setOpenModal(false);
-    setConfirmationModalOpen(true);
+  const handleBookAppointment = async () => {
+    try {
+      const response = await fetch("/appoint", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...appointmentDetails,
+          doctorName: name,
+          doctorSpecialization: Specialization,
+          doctorCity: city,
+          doctorLocation: location,
+        }),
+      });
+
+      if (response.ok) {
+        // const result = await response.json();
+        toast.success("Appointment booked successfully!");
+        setOpenModal(false);
+        setConfirmationModalOpen(true);
+      } else {
+        toast.error("Failed to book the appointment. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
   };
 
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);

@@ -129,6 +129,7 @@ function DoctorCard({
                 className="border border-gray-300 rounded px-2 py-1 mt-2 w-full"
                 value={appointmentDetails.name}
                 onChange={handleInputChange}
+                required
               />
               <input
                 type="email"
@@ -137,6 +138,7 @@ function DoctorCard({
                 className="border border-gray-300 rounded px-2 py-1 mt-2 w-full"
                 value={appointmentDetails.email}
                 onChange={handleInputChange}
+                required
               />
               <input
                 type="date"
@@ -145,12 +147,14 @@ function DoctorCard({
                 className="border border-gray-300 rounded px-2 py-1 mt-2 w-full"
                 value={appointmentDetails.date}
                 onChange={handleInputChange}
+                required
               />
               <select
                 name="time"
                 className="border border-gray-300 rounded px-2 py-1 mt-2 w-full"
                 value={appointmentDetails.time}
                 onChange={handleInputChange}
+                required
               >
                 <option value="">Select Time</option>
                 <option value="9:00 AM">9:00 AM</option>

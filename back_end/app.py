@@ -166,6 +166,8 @@ def contact():
 def predictDisease():
 
     symptoms = request.get_json()
+    # symptom_list = [symptoms[key]["value"] for key in symptoms]
+    # symptom_list = [str(symptom).strip() for symptom in symptom_list]
     symptom_list = [symptoms[key]["value"] for key in symptoms]
     symptom_list = [str(symptom).strip() for symptom in symptom_list]
     print("Received Symptoms:", symptom_list)
@@ -177,18 +179,17 @@ def predictDisease():
     for symptom in symptom_list:
         if symptom:
             index = data_dict["symptom_index"].get(symptom, -1)
-            print(f"Symptom: {symptom}, Index: {index}")
             if index != -1:
                 input_data[index] = 1
 
-    print("Updated input data after processing symptoms:", input_data)  # Debugging line
+    # print("Updated input data after processing symptoms:", input_data)  # Debugging line
 
     input_data = np.array(input_data).reshape(1, -1)
 
     # Check if the input data is all zeros
     if sum(input_data[0]) == 0:
         print("Error: No valid symptoms provided.")
-    print("Input Data for Prediction:", input_data)
+    # print("Input Data for Prediction:", input_data)
 
     # Make predictions with the models
     rf_prediction = data_dict["predictions_classes"][rf_model.predict(input_data)[0]]

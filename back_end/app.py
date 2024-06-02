@@ -375,9 +375,9 @@ def appoint():
             subject="Appointment Confirmation",
             sender="zerowood70@gmail.com",
             recipients=[patient_email],
-            body=f"Dear {patient_name},\n\nYour appointment with Dr. {doctor_name}, {doctor_specialization}, "
+            body=f"Dear {patient_name},\n\nYour appointment with {doctor_name}, {doctor_specialization}, "
                  f"on {appointment_date} at {appointment_time} in {doctor_city}, {doctor_location} has been "
-                 f"successfully booked.\n\nBest regards,\nYour Healthcare Team"
+                 f"successfully booked.\n\nBest regards,\nYour AI-HealthEngine Team"
         )
         mail.send(msg)
 

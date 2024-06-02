@@ -146,7 +146,7 @@ def contact():
     msg = Message(
         subject=f'Contact Form Submission from {name}',
         sender='zerowood70@gmail.com',
-        recipients=['aksbgs25@gmail.com']  # Your recipient email address
+        recipients=[{email}]  # Your recipient email address
     )
     msg.body = f"""
     Name: {name}
@@ -327,6 +327,7 @@ def predictDisease():
 def profile():
 
     user = request.get_json()
+    print(user)
     email = user.get('email')
     print(email)
     cursor = mysql.connection.cursor()

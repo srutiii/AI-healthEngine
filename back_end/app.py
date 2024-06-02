@@ -72,13 +72,13 @@ def login():
     print(email,password)
 
     cursor = mysql.connection.cursor()
-    cursor.execute('SELECT * FROM signup WHERE email = %s', (email,))
+    cursor.execute('SELECT * FROM store WHERE email = %s', (email,))
     user = cursor.fetchone()
     cursor.close()
 
     print(user)
 
-    if user and bcrypt.check_password_hash(user[4], password):  # Assuming that password is the third column in the users table
+    if user and bcrypt.check_password_hash(user[2], password):  # Assuming that password is the third column in the users table
         print("Login")
         session['email'] = email
         return jsonify({"success": True, "message": "Login successful"})
@@ -98,9 +98,18 @@ def signup():
 
     first_name = data.get('first_name')
     last_name = data.get('last_name')
+    #store both in one
+    name = f"{first_name} {last_name}"
     email = data.get('email')
-    phone_number = data.get('phone_number')
     password = data.get('password')
+    phone = data.get('phone_number')
+    age = data.get('age')
+    gender = data.get('gender')
+    #store both in one
+    city = data.get('city')
+    state = data.get('state')
+    address = f"{city} {state}"
+
 
     hashed_password = bcrypt.generate_password_hash(password)
     bcrypt_pwd = bcrypt.check_password_hash(hashed_password,password)
@@ -114,7 +123,7 @@ def signup():
 
     print(data)
     cursor = mysql.connection.cursor()
-    cursor.execute("INSERT INTO signup VALUES (%s,%s,%s,%s,%s)",(first_name,last_name,email,phone_number,hashed_password))
+    cursor.execute("INSERT INTO store VALUES (%s,%s,%s,%s,%s,%s,%s)",(name,email,hashed_password,gender,age,phone,address))
     cursor.connection.commit()
     cursor.close()
 
@@ -319,19 +328,21 @@ def profile():
 
     user = request.get_json()
     email = user.get('email')
+    print(email)
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM store WHERE email = %s', (email,))
-    cursor.connection.commit()
+    user_data = cursor.fetchone()
+    print(user_data)
     cursor.close()
 
-    if user:
+    if user_data:
         user_details = {
-            'name': user[0],
-            'email': user[1],
-            'gender': user[3],
-            'age': user[4],
-            'phone': user[5],
-            'address': user[6]
+            'name': user_data[0],
+            'email': user_data[1],
+            'gender': user_data[3],
+            'age': user_data[4],
+            'phone': user_data[5],
+            'address': user_data[6]
         }
         return jsonify(user_details)
     else:

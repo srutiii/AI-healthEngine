@@ -14,6 +14,7 @@ function Signup() {
     confirm_password: "",
     age: "",
     gender: "",
+    // city:"",
   };
 
   const navigate = useNavigate();

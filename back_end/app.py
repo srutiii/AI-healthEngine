@@ -125,10 +125,40 @@ def signup():
 @app.route('/contact', methods = ['GET','POST'])
 def contact():
 
-    msg = Message(subject='Hello from the other side!', sender='zerowood70@gmail.com', recipients=['aksbgs25@gmail.com'])
-    msg.body = "Hey Tima, sending you this email from my Flask app, lmk if it works, I love you alok"
-    mail.send(msg)
-    return "Message sent!"
+    data = request.json
+
+    # Extract form data
+    name = data.get('name')
+    email = data.get('email')
+    phone = data.get('phone')
+    details = data.get('details')
+
+    # Create the email message
+    msg = Message(
+        subject=f'Contact Form Submission from {name}',
+        sender='zerowood70@gmail.com',
+        recipients=['aksbgs25@gmail.com']  # Your recipient email address
+    )
+    msg.body = f"""
+    Name: {name}
+    Email: {email}
+    Phone: {phone}
+    Details: {details}
+    """
+
+    try:
+        mail.send(msg)
+        response = {
+            "status": "success",
+            "message": "Message sent successfully!"
+        }
+        return jsonify(response), 200
+    except Exception as e:
+        response = {
+            "status": "error",
+            "message": str(e)
+        }
+        return jsonify(response), 500
 
 
 #Route for disease prediction...

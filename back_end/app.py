@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'zerowood70@gmail.com'
-app.config['MAIL_PASSWORD'] = '..'
+app.config['MAIL_PASSWORD'] = 'byki sxmt xfhp cpcs'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
@@ -370,6 +370,17 @@ def appoint():
         # For now, we'll just print the data to the console
         print(f"Appointment Details: {data}")
 
+        # Send confirmation email
+        msg = Message(
+            subject="Appointment Confirmation",
+            sender="zerowood70@gmail.com",
+            recipients=[patient_email],
+            body=f"Dear {patient_name},\n\nYour appointment with Dr. {doctor_name}, {doctor_specialization}, "
+                 f"on {appointment_date} at {appointment_time} in {doctor_city}, {doctor_location} has been "
+                 f"successfully booked.\n\nBest regards,\nYour Healthcare Team"
+        )
+        mail.send(msg)
+
         # Simulate saving the data and sending a success response
         response = {
             "success": True,
@@ -384,7 +395,6 @@ def appoint():
             "message": "Failed to book the appointment."
         }
         return jsonify(response), 500
-
 
 if __name__ == '__main__':
     app.run()

@@ -34,7 +34,7 @@ function DoctorCard({
 
   const handleBookAppointment = async () => {
     try {
-      const response = await fetch("/appoint", {
+      const response = await fetch("http://localhost:5000/appoint", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

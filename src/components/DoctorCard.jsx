@@ -48,8 +48,9 @@ function DoctorCard({
         }),
       });
 
-      if (response.ok) {
-        // const result = await response.json();
+      const result = await response.json();
+      
+      if (result.success) {
         toast.success("Appointment booked successfully!");
         setOpenModal(false);
         setConfirmationModalOpen(true);

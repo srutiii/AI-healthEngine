@@ -14,6 +14,8 @@ function Signup() {
     confirm_password: "",
     age: "",
     gender: "",
+    city: "",
+    state: "",
   };
 
   const navigate = useNavigate();
@@ -38,15 +40,14 @@ function Signup() {
           const data = await response.json();
 
           if (data.success) {
-            // Handle successful signup, e.g., redirect to another page
-            console.log("Signup successful");
+           
             toast.success("Registered successfully!");
             setSignup(true);
           } else {
             setError(data.message);
           }
         } catch (error) {
-          console.error("Error during signup:", error);
+          // console.error("Error during signup:", error);
           setError("An error occurred during signup");
           toast.error("Registration Failed!");
         }
@@ -176,6 +177,40 @@ function Signup() {
                   <p className="text-sm text-red-700">{errors.gender}</p>
                 ) : null}
               </div>
+            </div>{" "}
+            <div className="md:flex rounded-md  mb-5 px-4 text-gray-500">
+              <div className="flex flex-col px-2 py-2 ">
+                <input
+                  name="city"
+                  id="city"
+                  type="text"
+                  placeholder="City"
+                  className="bg-transparent shadow-sm focus:outline-none shadow-gray-400 font-medium    px-4 py-2 w-full"
+                  value={values.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  autoComplete="off"
+                />
+                {errors.city && touched.city ? (
+                  <p className="text-sm text-red-700">{errors.city}</p>
+                ) : null}
+              </div>
+              <div className="flex flex-col px-2 py-2 ">
+                <input
+                  name="state"
+                  id="state"
+                  type="text"
+                  placeholder="State"
+                  className="bg-transparent shadow-sm focus:outline-none shadow-gray-400 font-medium    px-4 py-2 w-full"
+                  value={values.state}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  autoComplete="off"
+                />
+                {errors.state && touched.state ? (
+                  <p className="text-sm text-red-700">{errors.state}</p>
+                ) : null}
+              </div>
             </div>
             <div className=" md:flex rounded-md  mb-5 px-4">
               <div className="flex flex-col px-2 py-2">
@@ -198,6 +233,7 @@ function Signup() {
               {/* <label htmlFor="confirm_password" className="">
                 Confirm Password
               </label> */}
+
               <div className="flex flex-col px-2 py-2">
                 <input
                   name="confirm_password"

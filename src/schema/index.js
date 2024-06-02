@@ -13,6 +13,8 @@ export const signupSchema = Yup.object({
     .oneOf([Yup.ref("password"), null], "Password must match."),
   age: Yup.number().min(18).required("Please enter your age."),
   gender: Yup.string().required("Please select your gender."),
+  city: Yup.string().required("Please enter your city."),
+  state: Yup.string().required("Please enter your state."),
 });
 
 export const loginSchema = Yup.object({

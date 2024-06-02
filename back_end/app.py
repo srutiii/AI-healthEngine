@@ -86,7 +86,7 @@ def login():
     else:
         print("error")
         return jsonify(logged_in=False, message='Login failed. Please check your email and password.')
-
+ 
 
 #This is SignUp Form
 @app.route('/signup', methods=['POST'])
@@ -135,37 +135,47 @@ def contact():
 @app.route('/diseasepredict', methods = ['GET','POST'])
 def predictDisease():
 
-    symptoms = request.json
-    symptom_list = [str(symptoms['symptom1']), str(symptoms['symptom2']), str(symptoms['symptom3'])]
+    symptoms = request.get_json()
+    symptom_list = [symptoms[key]["value"] for key in symptoms]
+    symptom_list = [str(symptom).strip() for symptom in symptom_list]
+    print("Received Symptoms:", symptom_list)
 
-    # print(symptoms)
-    # print(data_dict['predictions_classes'])
+    # Initialize input data as an array of zeros
     input_data = [0] * len(data_dict["symptom_index"])
+
+    # Update the input vector based on input symptoms
     for symptom in symptom_list:
-        # print(symptom)
-        index = data_dict["symptom_index"].get(symptom, -1)
-        if index != -1:
-            input_data[index] = 1
+        if symptom:
+            index = data_dict["symptom_index"].get(symptom, -1)
+            print(f"Symptom: {symptom}, Index: {index}")
+            if index != -1:
+                input_data[index] = 1
+
+    print("Updated input data after processing symptoms:", input_data)  # Debugging line
 
     input_data = np.array(input_data).reshape(1, -1)
 
-   
+    # Check if the input data is all zeros
+    if sum(input_data[0]) == 0:
+        print("Error: No valid symptoms provided.")
+    print("Input Data for Prediction:", input_data)
+
+    # Make predictions with the models
     rf_prediction = data_dict["predictions_classes"][rf_model.predict(input_data)[0]]
     nb_prediction = data_dict["predictions_classes"][nb_model.predict(input_data)[0]]
     svm_prediction = data_dict["predictions_classes"][svm_model.predict(input_data)[0]]
- 
+    print("RF Prediction:", rf_prediction, "NB Prediction:", nb_prediction, "SVM Prediction:", svm_prediction)
 
-    # final_prediction = mode([ nb_prediction, svm_prediction], axis=0, keepdims=True, nan_policy='omit')[0][0]
+    # Define mode function
     def mode(arr):
         counter = Counter(arr)
         max_count = max(counter.values())
         mode_values = [k for k, v in counter.items() if v == max_count]
         return mode_values[0]
 
-    final_prediction = mode([nb_prediction, svm_prediction])
+    final_prediction = mode([svm_prediction, rf_prediction, nb_prediction])
+    print("Final Prediction:", final_prediction)
 
-    
-    # print(f'Final Prediction: {final_prediction}')
     predictions = {
         "rf_model_prediction": rf_prediction,
         "nb_model_prediction": nb_prediction,
@@ -173,8 +183,60 @@ def predictDisease():
         "final_prediction": final_prediction
     }
 
-    session['predicted_disease'] = predictions['final_prediction']
-    print(predictions['final_prediction'])
+    print("Final Predictions:", predictions)
+
+    # # Get the symptoms from the request JSON payload
+    # symptoms = request.json
+    # symptom_list = [str(symptoms.get('symptom1', "")), str(symptoms.get('symptom2', "")), str(symptoms.get('symptom3', ""))]
+    # # symptom_list = [str(symptoms["symptom1"]), str(symptoms["symptom2"]), str(symptoms["symptom3"])]
+    # print(symptom_list)
+
+    # # Initialize input data as an array of zeros
+    # input_data = [0] * len(data_dict["symptom_index"])
+
+    # for symptom in symptom_list:
+    #     index = data_dict["symptom_index"].get(symptom, -1)
+    #     print(index)
+    #     if index != -1:
+    #         input_data[index] = 1
+
+    # print("Updated input data after processing symptoms:", input_data)  # Debugging line
+
+    # input_data = np.array(input_data).reshape(1, -1)
+
+
+    # if sum(input_data[0]) == 0:
+    #     print("error")
+
+    # print(input_data)
+    # rf_prediction = data_dict["predictions_classes"][rf_model.predict(input_data)[0]]
+    # nb_prediction = data_dict["predictions_classes"][nb_model.predict(input_data)[0]]
+    # svm_prediction = data_dict["predictions_classes"][svm_model.predict(input_data)[0]]
+    # print(rf_prediction,svm_prediction,nb_prediction)
+ 
+
+    # # final_prediction = mode([ nb_prediction, svm_prediction], axis=0, keepdims=True, nan_policy='omit')[0][0]
+    # def mode(arr):
+    #     counter = Counter(arr)
+    #     max_count = max(counter.values())
+    #     mode_values = [k for k, v in counter.items() if v == max_count]
+    #     return mode_values[0]
+
+    # final_prediction = mode([ svm_prediction,rf_prediction,nb_prediction])
+ 
+    # print(final_prediction)
+
+    
+    # print(f'Final Prediction: {final_prediction}')
+    # predictions = {
+    #     "rf_model_prediction": rf_prediction,
+    #     "nb_model_prediction": nb_prediction,
+    #     "svm_model_prediction": svm_prediction,
+    #     "final_prediction": final_prediction
+    # }
+
+    # # session['predicted_disease'] = predictions['final_prediction']
+    # print(predictions['final_prediction'])
 
     
     # # return jsonify({"prediction": predictions['final_prediction']})

@@ -14,8 +14,12 @@ function Signup() {
     confirm_password: "",
     age: "",
     gender: "",
+<<<<<<< HEAD
     city: "",
     state: "",
+=======
+    // city:"",
+>>>>>>> origin/main
   };
 
   const navigate = useNavigate();

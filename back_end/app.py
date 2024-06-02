@@ -338,11 +338,39 @@ def profile():
     
 
 #Route for profile prediction...
-@app.route('/appoint', methods = ['GET','POST'])
-def appoint():    
-    data = request.json
-    print(data)
-    return "got it"
+@app.route('/appoint', methods=['POST'])
+def appoint():
+    try:
+        data = request.json
+        
+        # Extract details from the data
+        patient_name = data.get('name')
+        patient_email = data.get('email')
+        appointment_date = data.get('date')
+        appointment_time = data.get('time')
+        doctor_name = data.get('doctorName')
+        doctor_specialization = data.get('doctorSpecialization')
+        doctor_city = data.get('doctorCity')
+        doctor_location = data.get('doctorLocation')
+        
+        # Here you can add code to save the appointment details to a database
+        # For now, we'll just print the data to the console
+        print(f"Appointment Details: {data}")
+
+        # Simulate saving the data and sending a success response
+        response = {
+            "success": True,
+            "message": "Appointment booked successfully!"
+        }
+        return jsonify(response), 200
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        response = {
+            "success": False,
+            "message": "Failed to book the appointment."
+        }
+        return jsonify(response), 500
 
 
 if __name__ == '__main__':

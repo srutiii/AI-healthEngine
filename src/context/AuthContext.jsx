@@ -12,15 +12,30 @@ export function AuthProvider({ children }) {
     return localStorage.getItem("loggedIn") === "true";
   });
 
+  const [email, setEmail] = useState(() => {
+    return localStorage.getItem("email") || "";
+  });
+
   useEffect(() => {
     localStorage.setItem("loggedIn", loggedIn);
   }, [loggedIn]);
 
-  const login = () => setLoggedIn(true);
-  const logout = () => setLoggedIn(false);
+  useEffect(() => {
+    localStorage.setItem("email", email);
+  }, [email]);
+
+  const login = (email) => {
+    setEmail(email);
+    setLoggedIn(true);
+  };
+
+  const logout = () => {
+    setEmail("");
+    setLoggedIn(false);
+  };
 
   return (
-    <AuthContext.Provider value={{ loggedIn, login, logout }}>
+    <AuthContext.Provider value={{ loggedIn, email, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

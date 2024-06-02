@@ -34,7 +34,7 @@ function Login() {
 
           if (data.success) {
             // Handle successful login
-            login(); // Set the logged-in state in AuthContext
+            login(values.email)
             toast.success("Login successful!");
             navigate("/predict"); // Redirect to the predict page
           } else {

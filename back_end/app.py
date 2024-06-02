@@ -340,8 +340,9 @@ def profile():
 #Route for profile prediction...
 @app.route('/appoint', methods = ['GET','POST'])
 def appoint():    
-    data = request.json()
+    data = request.json
     print(data)
+    return "got it"
 
 
 if __name__ == '__main__':

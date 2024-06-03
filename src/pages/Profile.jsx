@@ -47,8 +47,21 @@ function Profile() {
 
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
-    const fileURLs = files.map((file) => URL.createObjectURL(file));
-    setUploadedFiles([...uploadedFiles, ...fileURLs]);
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append(`files[${index}]`, file);
+    });
+    formData.append("user_id", 1); // Replace 1 with the actual user ID or retrieve it from the authentication context
+
+    fetch("http://localhost:5000/upload_report", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data); // Handle response from the server
+      })
+      .catch((error) => console.error("Error uploading report:", error));
   };
 
   const handleDeleteFile = (index) => {

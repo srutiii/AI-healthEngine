@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'ai.healthengine@gmail.com'
+app.config['MAIL_USERNAME'] = 'zerowood70@gmail.com'
 app.config['MAIL_PASSWORD'] = 'byki sxmt xfhp cpcs'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True

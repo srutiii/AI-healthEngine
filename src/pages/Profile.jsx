@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { FaPenToSquare } from "react-icons/fa6";
 import { useAuth } from "../context/AuthContext";
 
 function Profile() {
-  const [isEditing, setIsEditing] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
   const [values, setValues] = useState({
     name: "",
@@ -14,13 +12,10 @@ function Profile() {
     address: "",
     joiningDate: "",
     image: "public/user.png",
-    height: "",
-    weight: "",
-    pressure: "",
-    bmi: "",
   });
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const { email } = useAuth();
+
   useEffect(() => {
     // Fetch user data from the backend
     fetch("http://localhost:5000/profile", {
@@ -43,11 +38,7 @@ function Profile() {
             phoneNumber: data.phone,
             email: data.email,
             address: data.address,
-            // Assuming these values are fetched from backend
-            height: data.height || "",
-            weight: data.weight || "",
-            pressure: data.pressure || "",
-            bmi: data.bmi || "",
+            joiningDate: data.joiningDate || "",
           });
         }
       })
@@ -56,25 +47,21 @@ function Profile() {
 
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
-    const fileURLs = files.map((file) => URL.createObjectURL(file));
-    setUploadedFiles([...uploadedFiles, ...fileURLs]);
-  };
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleSaveClick = () => {
-    setIsEditing(false);
-    // Add logic to save the edited details
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValues({
-      ...values,
-      [name]: value,
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append(`files[${index}]`, file);
     });
+    formData.append("user_id", 1); // Replace 1 with the actual user ID or retrieve it from the authentication context
+
+    fetch("http://localhost:5000/upload_report", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data); // Handle response from the server
+      })
+      .catch((error) => console.error("Error uploading report:", error));
   };
 
   const handleDeleteFile = (index) => {
@@ -86,159 +73,15 @@ function Profile() {
       <div className="p-2">
         <div className="w-full bg-gray-300 p-2 rounded mb-4">
           <h2 className="text-xl font-bold mb-2">Personal Details</h2>
-          {isEditing ? (
-            <div>
-              <div className="flex items-center">
-                <p>Name:</p>
-                <input
-                  type="text"
-                  name="name"
-                  value={values.name}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex items-center">
-                <p>Age:</p>
-                <input
-                  type="text"
-                  name="age"
-                  value={values.age}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex items-center">
-                <p>Gender:</p>
-                <input
-                  type="text"
-                  name="gender"
-                  value={values.gender}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex items-center">
-                <p>Phone:</p>
-                <input
-                  type="text"
-                  name="phoneNumber"
-                  value={values.phoneNumber}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex items-center">
-                <p>Email:</p>
-                <input
-                  type="text"
-                  name="email"
-                  value={values.email}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex items-center">
-                <p>Address:</p>
-                <input
-                  type="text"
-                  name="address"
-                  value={values.address}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex items-center">
-                <p>Joining Date:</p>
-                <input
-                  type="text"
-                  name="joiningDate"
-                  value={values.joiningDate}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-            </div>
-          ) : (
-            <div className="relative">
-              <p>Name: {values.name}</p>
-              <p>Age: {values.age}</p>
-              <p>Gender: {values.gender}</p>
-              <p>Phone: {values.phoneNumber}</p>
-              <p>Email: {values.email}</p>
-              <p>Address: {values.address}</p>
-              <p>Joining Date: {values.joiningDate}</p>
-              <button
-                onClick={handleEditClick}
-                className="flex justify-center items-center text-gray-600 absolute top-0 right-3"
-              >
-                <FaPenToSquare /> Edit
-              </button>
-            </div>
-          )}
-        </div>
-
-        <div className="w-full bg-gray-300 p-2 rounded">
-          <h2 className="text-xl font-bold mb-2">Health Units</h2>
-          {isEditing ? (
-            <div>
-              <div className="flex items-center">
-                <p>Height:</p>
-                <input
-                  type="text"
-                  name="height"
-                  value={values.height}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex items-center">
-                <p>Weight:</p>
-                <input
-                  type="text"
-                  name="weight"
-                  value={values.weight}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex items-center">
-                <p>Blood Pressure:</p>
-                <input
-                  type="text"
-                  name="pressure"
-                  value={values.pressure}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex items-center">
-                <p>BMI:</p>
-                <input
-                  type="text"
-                  name="bmi"
-                  value={values.bmi}
-                  onChange={handleChange}
-                  className="my-2 px-2 rounded mx-2"
-                />
-              </div>
-              <div className="flex justify-center items-center w-full mt-5">
-                <button
-                  onClick={handleSaveClick}
-                  className="flex justify-center items-center bg-btn2 px-5 py-2 rounded mb-3"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="relative">
-              <p>Height: {values.height} cm</p>
-              <p>Weight: {values.weight} kg</p>
-              <p>Blood Pressure: {values.pressure}</p>
-              <p>BMI: {values.bmi}</p>
-            </div>
-          )}
+          <div className="relative">
+            <p>Name: {values.name}</p>
+            <p>Age: {values.age}</p>
+            <p>Gender: {values.gender}</p>
+            <p>Phone: {values.phoneNumber}</p>
+            <p>Email: {values.email}</p>
+            <p>Address: {values.address}</p>
+            <p>Joining Date: {values.joiningDate}</p>
+          </div>
         </div>
       </div>
     );

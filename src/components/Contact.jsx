@@ -47,7 +47,7 @@ const Contact = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
-        toast.success("Data sent to backend successfully");
+        toast.success("Mail sent to backend successfully");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -182,9 +182,9 @@ const Contact = () => {
                 <div>
                   <button
                     type="submit"
-                    className="w-full bg-primary rounded border border-primary p-3 transition hover:bg-opacity-90"
+                    className="w-full bg-btn2 rounded border border-primary p-3 transition hover:bg-opacity-90"
                   >
-                    <span className="text-white text-base font-semibold">
+                    <span className="text-white  text-base font-semibold">
                       Send Message
                     </span>
                   </button>

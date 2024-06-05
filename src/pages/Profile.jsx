@@ -185,12 +185,12 @@ function Profile() {
     </div>
   );
 
-  const renderAppointmentsSection = () => (
-    <div>
-      <h2 className="text-xl font-bold mb-2">Appointments</h2>
-      {/* Add appointment details or management here */}
-    </div>
-  );
+  // const renderAppointmentsSection = () => (
+  //   <div>
+  //     <h2 className="text-xl font-bold mb-2">Appointments</h2>
+  //     {/* Add appointment details or management here */}
+  //   </div>
+  // );
 
   return (
     <div className="w-full font-text flex">
@@ -236,7 +236,7 @@ function Profile() {
         </div>
         {activeSection === "about" && renderAboutSection()}
         {activeSection === "reports" && renderReportsSection()}
-        {activeSection === "appointments" && renderAppointmentsSection()}
+        {/* {activeSection === "appointments" && renderAppointmentsSection()} */}
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ from collections import Counter
 from flask_bcrypt import Bcrypt 
 from flask_mail import Mail, Message
 from collections import Counter
+import os
 
 
 
@@ -29,6 +30,11 @@ app.config['MAIL_USE_SSL'] = True
 bcrypt = Bcrypt(app) 
 CORS(app) 
 mail = Mail(app)
+
+# Ensure the 'uploads' directory exists
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 app.secret_key = "helloAI"
 
@@ -395,6 +401,32 @@ def appoint():
             "message": "Failed to book the appointment."
         }
         return jsonify(response), 500
+    
+@app.route("/upload",methods = ["POST","GET"])    
+def upload():
+
+    try:
+        # Check if the request contains a file
+        if 'file' not in request.files:
+            # 400 Bad Request: The client did not send a file
+            return jsonify({'error': 'No file part in the request'}), 400
+
+        file = request.files['file']
+
+        # If the user does not select a file, the browser submits an empty file without a filename
+        if file.filename == '':
+            # 400 Bad Request: The client did not select a file
+            return jsonify({'error': 'No selected file'}), 400
+
+        # Save the file to the 'uploads' folder
+        file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(file_path)
+
+        # 200 OK: File uploaded successfully
+        return jsonify({'message': 'File uploaded successfully', 'file_path': file_path}), 200
+    except Exception as e:
+        # 500 Internal Server Error: Something went wrong on the server
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run()

@@ -45,6 +45,7 @@ function Profile() {
       .catch((error) => console.error("Error fetching profile:", error));
   }, []);
 
+
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
     const formData = new FormData();
@@ -53,11 +54,16 @@ function Profile() {
     });
     formData.append("user_id", 1); // Replace 1 with the actual user ID or retrieve it from the authentication context
 
-    fetch("http://localhost:5000/upload_report", {
+    fetch("http://localhost:5000/upload", {
       method: "POST",
       body: formData,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(data); // Handle response from the server
       })
